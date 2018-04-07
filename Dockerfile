@@ -5,7 +5,7 @@ MAINTAINER ryan Zhang <rainbow954@163.com>
 RUN sed -i 's/archive.ubuntu.com/mirrors.ustc.edu.cn/g' /etc/apt/sources.list
 
 
-RUN apt-get update && apt-get install --no-install-recommends -y ca-certificates curl openssh-server net-tools wget git build-essential  python python-pip && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install --no-install-recommends -y ca-certificates curl openssh-server net-tools wget git build-essential  python python-pip iproute iproute-doc vim && rm -rf /var/lib/apt/lists/*
 
 # https://github.com/Yelp/dumb-init
 RUN curl -fLsS -o /usr/local/bin/dumb-init https://github.com/Yelp/dumb-init/releases/download/v1.0.2/dumb-init_1.0.2_amd64 && chmod +x /usr/local/bin/dumb-init
