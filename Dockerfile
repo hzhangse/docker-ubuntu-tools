@@ -19,6 +19,12 @@ RUN wget -q http://www-eu.apache.org/dist/maven/maven-3/${MAVEN_VERSION}/binarie
     rm apache-maven-${MAVEN_VERSION}-bin.tar.gz && \
     ln -s /opt/maven/apache-maven-${MAVEN_VERSION}/bin/mvn /usr/local/bin/mvn
 
+ENV TOMCAT_VERSION=8.5.30
+RUN wget -q http://mirrors.shu.edu.cn/apache/tomcat/tomcat-8/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz \
+    mkdir /opt/tomcat8 && \
+    tar xzf apache-tomcat-${TOMCAT_VERSION}.tar.gz -C /opt/tomcat8 && \
+    rm apache-tomcat-${TOMCAT_VERSION}.tar.gz  && \
+
 
 #Oracle JDK
 RUN echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu xenial main" | tee /etc/apt/sources.list.d/webupd8team-java.list && \
