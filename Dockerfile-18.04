@@ -1,0 +1,21 @@
+FROM ubuntu:18.04
+MAINTAINER ryan Zhang <rainbow954@163.com>
+
+RUN rm -rf /etc/apt/sources.list
+RUN echo 'deb http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse'>>/etc/apt/sources.list && echo 'deb-src http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse'>>/etc/apt/sources.list && echo 'deb http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse'>>/etc/apt/sources.list && echo 'deb-src http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse'>>/etc/apt/sources.list && echo 'deb http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse'>>/etc/apt/sources.list && echo 'deb-src http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse'>>/etc/apt/sources.list && echo 'deb http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse'>>/etc/apt/sources.list && echo 'deb-src http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse'>>/etc/apt/sources.list && echo 'deb http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse'>>/etc/apt/sources.list && echo 'deb-src http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse'>>/etc/apt/sources.list
+
+Run cat /etc/apt/sources.list
+
+RUN apt-get update && apt-get install -y openssh-server net-tools vim 
+
+RUN grep -q '^#PermitRootLogin' /etc/ssh/sshd_config && sed -i "/^#PermitRootLogin/cPermitRootLogin yes" /etc/ssh/sshd_config || echo PermitRootLogin yes >>/etc/ssh/sshd_config
+RUN grep -q '^#PasswordAuthentication' /etc/ssh/sshd_config && sed -i "/^#PasswordAuthentication/cPasswordAuthentication yes" /etc/ssh/sshd_config || echo PasswordAuthentication yes >>/etc/ssh/sshd_config
+
+# 添加测试用户admin，密码admin，并且将此用户添加到sudoers里  
+RUN groupadd admin && mkdir -p /home/admin
+RUN useradd -d /home/admin -g admin admin && chown -R admin:admin /home/admin
+RUN echo "admin:admin" | chpasswd  
+RUN echo "admin   ALL=(ALL)       ALL" >> /etc/sudoers  
+#change root password
+RUN echo "root:root" | chpasswd  
+ENTRYPOINT ["tail -f /dev/null"]
